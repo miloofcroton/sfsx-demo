@@ -46,8 +46,6 @@ const OrderChart = ({ orders }) => {
   const buyOrders = orders.filter(order => order.side === 'buy');
   const sellOrders = orders.filter(order => order.side === 'sell');
 
-  console.log(buyOrders);
-
   const chartData = {
     labels,
     datasets: [
