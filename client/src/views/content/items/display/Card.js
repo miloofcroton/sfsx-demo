@@ -1,15 +1,18 @@
 import React from 'react';
 
-const ItemCard = ({ item }) => {
+const OrderCard = ({ order }) => {
 
-  const { title, description } = item;
+  const { ticker, side, price, shares, open } = order;
 
   return (
     <div>
-      <h3>{title}</h3>
-      <p>{description}</p>
+      <span>{ticker} | </span>
+      <span>{side} | </span>
+      <span>{price} | </span>
+      <span>{shares} | </span>
+      <span>{open.toString()}</span>
     </div>
   );
 };
 
-export default ItemCard;
+export default OrderCard;

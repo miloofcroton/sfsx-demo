@@ -1,11 +1,11 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import ItemCard from './Card';
+import OrderCard from './Card';
 
-export default class ItemList extends PureComponent {
+export default class OrderList extends PureComponent {
 
   static propTypes = {
-    // list: PropTypes.array
+    list: PropTypes.array
   };
 
   componentDidMount() {
@@ -17,9 +17,9 @@ export default class ItemList extends PureComponent {
 
     return (
       <div>
-        <h2>List of items:</h2>
-        {!!list && list.map((item, index) => (
-          <ItemCard key={index} item={item} />
+        <h2>List of orders:</h2>
+        {!!list && list.map((order, index) => (
+          <OrderCard key={index} order={order} />
         ))}
       </div>
     );
