@@ -4,7 +4,8 @@ import {
   FETCH_ORDERS,
   FETCH_ORDER_LOADING,
   FETCH_ORDER_DONE,
-  FETCH_ORDER
+  FETCH_ORDER,
+  SET_TICKER
 } from './actions';
 
 const initialState = {
@@ -28,6 +29,8 @@ export default function reducer(state = initialState, { type, payload }) {
       return { ...state, loading: false };
     case FETCH_ORDER:
       return { ...state, details: payload };
+    case SET_TICKER:
+      return { ...state, selectedTicker: payload };
     default:
       return state;
   }

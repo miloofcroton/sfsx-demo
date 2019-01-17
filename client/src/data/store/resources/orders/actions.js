@@ -25,3 +25,9 @@ export const postOrder = order => ({
   type: POST_ORDER,
   payload: createOrder(order)
 });
+
+export const SET_TICKER = 'SET_TICKER';
+export const setTicker = ticker => ({
+  type: SET_TICKER,
+  payload: ticker
+});
