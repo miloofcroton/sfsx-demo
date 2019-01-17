@@ -1,8 +1,8 @@
 import { Router } from 'express';
-import items from './items/routes';
+import orders from './orders/routes';
 
 const resources = [
-  items
+  orders
 ];
 
 export default Router().use('/', ...resources);
