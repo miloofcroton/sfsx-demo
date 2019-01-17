@@ -2,55 +2,82 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-export class ItemCreate extends PureComponent {
+export class OrderCreate extends PureComponent {
 
   static propTypes = {
-    postItem: PropTypes.func.isRequired
+    postOrder: PropTypes.func.isRequired
   };
 
   state = {
-    title: '',
-    description: ''
+    ticker: '',
+    side: '',
+    price: '',
+    shares: '',
   };
 
   onChange = e => {
     this.setState({ [e.target.name]: e.target.value });
   };
 
-  createItem = e => {
+  createOrder = e => {
     e.preventDefault();
-    const { postItem } = this.props;
-    const { title, description } = this.state;
-    postItem({ title, description });
+    const { postOrder } = this.props;
+    const { ticker, side, price, shares } = this.state;
+    postOrder({ ticker, side, price, shares, open: true });
   };
 
   render() {
 
-    const { title, description } = this.state;
+    const { ticker, side, price, shares } = this.state;
 
     return (
       <div>
-        <form onSubmit={this.createItem}>
+        <form onSubmit={this.createOrder}>
           <div>
-            <label htmlFor="title">Title: </label>
-            <input
+            <label htmlFor="ticker">ticker: </label>
+            <select
               type="text"
-              name="title"
-              value={title}
+              name="ticker"
+              defaultValue={ticker}
+              onChange={this.onChange}
+            >
+              <option value='GOOG'>GOOG</option>
+              <option value='FB'>FB</option>
+              <option value='ORCL'>ORCL</option>
+            </select>
+          </div>
+          <div>
+            <label htmlFor="side">side: </label>
+            <select
+              type="text"
+              name="side"
+              defaultValue={side}
+              onChange={this.onChange}
+            >
+              <option value='buy'>buy</option>
+              <option value='sell'>sell</option>
+            </select>
+          </div>
+          <div>
+            <label htmlFor="price">price: </label>
+            <input
+              type="number"
+              name="price"
+              value={price}
               onChange={this.onChange}
             />
           </div>
           <div>
-            <label htmlFor="description">Description: </label>
+            <label htmlFor="shares">shares: </label>
             <input
-              type="text"
-              name="description"
-              value={description}
+              type="number"
+              name="shares"
+              value={shares}
               onChange={this.onChange}
             />
           </div>
           <div>
-            <button type="submit">Create new item</button>
+            <button type="submit">Create new order</button>
           </div>
         </form>
       </div>
@@ -58,17 +85,17 @@ export class ItemCreate extends PureComponent {
   }
 }
 
-import { postItem } from '../../../../data/store/resources/items/actions';
+import { postOrder } from '../../../../data/store/resources/orders/actions';
 
 const mapStateToProps = state => ({
 
 });
 
 const mapDispatchToProps = dispatch => ({
-  postItem: item => dispatch(postItem(item))
+  postOrder: order => dispatch(postOrder(order))
 });
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(ItemCreate);
+)(OrderCreate);
