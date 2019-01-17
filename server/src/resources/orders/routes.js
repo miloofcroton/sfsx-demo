@@ -3,7 +3,7 @@ import Order from './model';
 
 export default Router()
 
-  .get('/items/:id', (req, res, next) => {
+  .get('/orders/:id', (req, res, next) => {
     const { id } = req.params;
     Order.findById(id)
       .lean()
