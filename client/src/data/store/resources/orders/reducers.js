@@ -1,10 +1,10 @@
 import {
-  FETCH_ITEMS_LOADING,
-  FETCH_ITEMS_DONE,
-  FETCH_ITEMS,
-  FETCH_ITEM_LOADING,
-  FETCH_ITEM_DONE,
-  FETCH_ITEM
+  FETCH_ORDERS_LOADING,
+  FETCH_ORDERS_DONE,
+  FETCH_ORDERS,
+  FETCH_ORDER_LOADING,
+  FETCH_ORDER_DONE,
+  FETCH_ORDER
 } from './actions';
 
 const initialState = {
@@ -15,17 +15,17 @@ const initialState = {
 
 export default function reducer(state = initialState, { type, payload }) {
   switch (type) {
-    case FETCH_ITEMS_LOADING:
+    case FETCH_ORDERS_LOADING:
       return { ...state, loading: true };
-    case FETCH_ITEMS_DONE:
+    case FETCH_ORDERS_DONE:
       return { ...state, loading: false };
-    case FETCH_ITEMS:
+    case FETCH_ORDERS:
       return { ...state, list: payload };
-    case FETCH_ITEM_LOADING:
+    case FETCH_ORDER_LOADING:
       return { ...state, loading: true };
-    case FETCH_ITEM_DONE:
+    case FETCH_ORDER_DONE:
       return { ...state, loading: false };
-    case FETCH_ITEM:
+    case FETCH_ORDER:
       return { ...state, details: payload };
     default:
       return state;
