@@ -3,7 +3,7 @@ import Home from '../content/home';
 import About from '../content/about';
 
 // main sections
-import Items from '../content/items';
+import Orders from '../content/orders';
 
 
 // note: nav, order, and true are optional and add a link to the default header
@@ -25,12 +25,12 @@ export const ROUTES = {
     order: 2,
     label: 'About',
   },
-  ITEMS: {
-    Component: Items,
-    path: '/items',
-    linkTo: () => '/items',
+  ORDERS: {
+    Component: Orders,
+    path: '/orders',
+    linkTo: () => '/orders',
     nav: true,
     order: 3,
-    label: 'Items',
+    label: 'Orders',
   },
 };
