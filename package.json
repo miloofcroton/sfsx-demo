@@ -31,8 +31,6 @@
     "heroku-postbuild": "npm run build",
     "start": "cd server && npm start"
   },
-  "dependencies": {
-    "react-chartjs-2": "^2.7.4"
-  },
+  "dependencies": {},
   "devDependencies": {}
 }
