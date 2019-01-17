@@ -10,7 +10,8 @@ import {
 const initialState = {
   loading: false,
   list: [],
-  details: null
+  details: null,
+  selectedTicker: null
 };
 
 export default function reducer(state = initialState, { type, payload }) {
