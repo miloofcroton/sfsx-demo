@@ -24,10 +24,12 @@ const OrderChart = ({ orders }) => {
 
   const interval = (range.high - range.low) / BARS;
 
-  const labels = Array.apply(null, { BARS })
+  const labels = Array.apply(null, { length: BARS })
     .map((label, index) => {
       return (interval * index) + range.low;
     });
+
+  console.log(labels);
 
   const data = orders.reduce((acc, curr) => {
 
