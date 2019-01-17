@@ -9,7 +9,7 @@ const middleware = [
 
 const enhancers = [
   applyMiddleware(...middleware),
-  chromeExtension()
+  // chromeExtension()
 ];
 
 export const composedEnhancers = compose(
