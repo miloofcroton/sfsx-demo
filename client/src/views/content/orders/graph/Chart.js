@@ -9,6 +9,8 @@ const OrderChart = ({ orders }) => {
 
   const BARS = 10;
 
+  const zeroBars = () => Array.apply(null, { length: BARS }).map(() => 0);
+
   orders.sort((a, b) => a.price - b.price);
 
   // const range = {
@@ -24,38 +26,46 @@ const OrderChart = ({ orders }) => {
 
   const interval = (range.high - range.low) / BARS;
 
-  const labels = Array.apply(null, { length: BARS })
-    .map((label, index) => {
-      return (interval * index) + range.low;
+  const labels = zeroBars().map((label, index) => (interval * index + range.low).toFixed(2));
+
+  const findMatch = order => {
+
+    const labelMatch = labels.findIndex((label, index) => {
+      return Math.abs(order - label) < Math.abs(order - labels[index + 1]);
     });
 
-  console.log(labels);
+    return (labelMatch >= 0) ? labelMatch : BARS - 1;
+  };
 
-  const data = orders.reduce((acc, curr) => {
+  const count = orders => orders.reduce((acc, curr) => {
+    const match = findMatch(curr.price);
+    acc[match] += 1;
+    return acc;
+  }, zeroBars());
 
-  }, [])
+  const buyOrders = orders.filter(order => order.side === 'buy');
+  const sellOrders = orders.filter(order => order.side === 'sell');
+
+  console.log(buyOrders);
 
   const chartData = {
     labels,
     datasets: [
       {
-        fillColor: '#25BDFF',
-        strokeColor: '#25BDFF',
-        pointColor: '#25BDFF',
-        pointStrokeColor: '#fff',
-        pointHighlightFill: '#fff',
-        pointHighlightStroke: '#25BDFF',
-        data: [28, 48, 40, 19, 86, 27, 90, 23, 23, 32]
+        label: 'buy',
+        backgroundColor: 'blue',
+        data: count(buyOrders)
+      },
+      {
+        label: 'sell',
+        backgroundColor: 'red',
+        data: count(sellOrders)
       }
     ]
   };
 
   const chartOptions = {
     redraw: true,
-    bezierCurve: false,
-    datasetFill: false,
-    pointDotStrokeWidth: 4,
-    scaleShowVerticalLines: false,
     // responsive: true
   };
 
