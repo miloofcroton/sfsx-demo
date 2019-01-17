@@ -1,41 +1,30 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import { Bar as BarChart } from 'react-chartjs-2';
 
+const BARS = 10;
 
-const OrderChart = ({ orders }) => {
-
-
-  const BARS = 10;
+const OrderChart = ({ orders, setPrice }) => {
 
   const zeroBars = () => Array.apply(null, { length: BARS }).map(() => 0);
 
-  orders.sort((a, b) => a.price - b.price);
+  const min = Math.min(...orders.map(({ price }) => price));
+  const max = Math.max(...orders.map(({ price }) => price));
 
-  // const range = {
-  //   high: orders[0].price,
-  //   low: orders[orders.length - 1].price,
-  // };
+  const interval = (max - min) / BARS;
 
-  const range = orders.reduce((acc, curr) => {
-    if (typeof acc.high !== 'number' || acc.high < curr.price) acc.high = curr.price;
-    if (typeof acc.low !== 'number' || acc.low > curr.price) acc.low = curr.price;
-    return acc;
-  }, { high: null, low: null });
+  const labels = zeroBars().map((label, index) => (interval * index + min).toFixed(2));
 
-  const interval = (range.high - range.low) / BARS;
-
-  const labels = zeroBars().map((label, index) => (interval * index + range.low).toFixed(2));
-
-  const findMatch = order => {
+  const findMatch = price => {
 
     const labelMatch = labels.findIndex((label, index) => {
-      return Math.abs(order - label) < Math.abs(order - labels[index + 1]);
+      return Math.abs(price - label) < Math.abs(price - labels[index + 1]);
     });
 
     return (labelMatch >= 0) ? labelMatch : BARS - 1;
   };
+
+  const orderSide = side => orders.filter(order => order.side === side);
 
   const count = orders => orders.reduce((acc, curr) => {
     const match = findMatch(curr.price);
@@ -43,8 +32,16 @@ const OrderChart = ({ orders }) => {
     return acc;
   }, zeroBars());
 
-  const buyOrders = orders.filter(order => order.side === 'buy');
-  const sellOrders = orders.filter(order => order.side === 'sell');
+  const orderCount = side => count(orderSide(side));
+
+  const buyData = orderCount('buy');
+  const sellData = orderCount('sell');
+
+  const onClick = (event, items) => {
+    const index = items[0]._index;
+    const price = labels[index];
+    setPrice(price);
+  };
 
   const chartData = {
     labels,
@@ -52,19 +49,27 @@ const OrderChart = ({ orders }) => {
       {
         label: 'buy',
         backgroundColor: 'blue',
-        data: count(buyOrders)
+        data: buyData
       },
       {
         label: 'sell',
         backgroundColor: 'red',
-        data: count(sellOrders)
+        data: sellData
       }
     ]
   };
 
   const chartOptions = {
     redraw: true,
-    // responsive: true
+    scales: {
+      yAxes: [{
+        ticks: {
+          beginAtZero: true,
+          stepSize: 1
+        }
+      }]
+    },
+    onClick
   };
 
   return (
@@ -81,7 +86,8 @@ const OrderChart = ({ orders }) => {
 };
 
 OrderChart.propTypes = {
-  orders: PropTypes.array
+  orders: PropTypes.array,
+  setPrice: PropTypes.func.isRequired
 };
 
 export default OrderChart;
