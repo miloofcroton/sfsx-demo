@@ -1,18 +1,18 @@
 import { connect } from 'react-redux';
-import ItemList from './List';
+import OrderList from './List';
 
-import { fetchItems } from '../../../../data/store/resources/items/actions';
-import { getItems } from '../../../../data/store/resources/items/selectors';
+import { fetchOrders } from '../../../../data/store/resources/orders/actions';
+import { getOrders } from '../../../../data/store/resources/orders/selectors';
 
 const mapStateToProps = state => ({
-  list: getItems(state)
+  list: getOrders(state)
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetch: () => dispatch(fetchItems())
+  fetch: () => dispatch(fetchOrders())
 });
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(ItemList);
+)(OrderList);
