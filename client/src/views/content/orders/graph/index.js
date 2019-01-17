@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import OrderChart from './Chart';
 
-import { fetchOrders } from '../../../../data/store/resources/orders/actions';
+import { setPrice } from '../../../../data/store/resources/orders/actions';
 import { getTickerOrders } from '../../../../data/store/resources/orders/selectors';
 
 const mapStateToProps = state => ({
@@ -9,7 +9,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetch: () => dispatch(fetchOrders())
+  setPrice: price => dispatch(setPrice(price))
 });
 
 export default connect(

@@ -5,14 +5,16 @@ import {
   FETCH_ORDER_LOADING,
   FETCH_ORDER_DONE,
   FETCH_ORDER,
-  SET_TICKER
+  SET_TICKER,
+  SET_PRICE,
 } from './actions';
 
 const initialState = {
   loading: false,
   list: [],
   details: null,
-  selectedTicker: null
+  selectedTicker: null,
+  selectedPrice: null
 };
 
 export default function reducer(state = initialState, { type, payload }) {
@@ -31,6 +33,8 @@ export default function reducer(state = initialState, { type, payload }) {
       return { ...state, details: payload };
     case SET_TICKER:
       return { ...state, selectedTicker: payload };
+    case SET_PRICE:
+      return { ...state, selectedPrice: payload };
     default:
       return state;
   }
