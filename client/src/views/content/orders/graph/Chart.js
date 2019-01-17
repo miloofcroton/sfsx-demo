@@ -2,9 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Bar as BarChart } from 'react-chartjs-2';
 
+import OrderList from './OrderList';
+
 const BARS = 10;
 
-const OrderChart = ({ orders, setPrice }) => {
+const OrderChart = ({ orders, setPrice, selectedPrice }) => {
 
   const zeroBars = () => Array.apply(null, { length: BARS }).map(() => 0);
 
@@ -15,16 +17,21 @@ const OrderChart = ({ orders, setPrice }) => {
 
   const labels = zeroBars().map((label, index) => (interval * index + min).toFixed(2));
 
+  const indexMatch = price => labels.findIndex((label, index) => {
+    return Math.abs(price - label) < Math.abs(price - labels[index + 1]);
+  });
+
   const findMatch = price => {
-
-    const labelMatch = labels.findIndex((label, index) => {
-      return Math.abs(price - label) < Math.abs(price - labels[index + 1]);
-    });
-
-    return (labelMatch >= 0) ? labelMatch : BARS - 1;
+    const match = indexMatch(price);
+    return (match >= 0) ? match : BARS - 1;
   };
 
   const orderSide = side => orders.filter(order => order.side === side);
+
+  const tickerOrders = orders => orders.reduce((acc, curr) => {
+    const index = indexMatch(curr.price);
+    return (labels[index] == selectedPrice) ? acc.concat(curr) : acc;
+  }, []);
 
   const count = orders => orders.reduce((acc, curr) => {
     const match = findMatch(curr.price);
@@ -40,7 +47,7 @@ const OrderChart = ({ orders, setPrice }) => {
   const onClick = (event, items) => {
     const index = items[0]._index;
     const price = labels[index];
-    setPrice(price);
+    setPrice(parseInt(price));
   };
 
   const chartData = {
@@ -81,13 +88,17 @@ const OrderChart = ({ orders, setPrice }) => {
         width={300}
         height={300}
       />
+
+      <OrderList orders={tickerOrders(orders)}/>
+
     </div>
   );
 };
 
 OrderChart.propTypes = {
   orders: PropTypes.array,
-  setPrice: PropTypes.func.isRequired
+  setPrice: PropTypes.func.isRequired,
+  selectedPrice: PropTypes.number
 };
 
 export default OrderChart;
